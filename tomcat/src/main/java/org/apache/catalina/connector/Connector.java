@@ -1,7 +1,7 @@
 package org.apache.catalina.connector;
 
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -38,11 +38,11 @@ public class Connector implements Runnable {
         this.serverSocket = createServerSocket(port, acceptCount);
         this.stopped = false;
         this.executorService = new ThreadPoolExecutor(
-                acceptCount,
+                maxThreads,
                 maxThreads,
                 KEEP_ALIVE_SECONDS,
                 TimeUnit.SECONDS,
-                new LinkedBlockingQueue<>(100)
+                new ArrayBlockingQueue<>(100)
         );
     }
 
